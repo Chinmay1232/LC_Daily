@@ -1,0 +1,48 @@
+class Solution {
+public:
+
+    bool ok(vector<int> a, int mid, double h)
+    {
+        const int n = a.size();
+        double tot = 0;
+
+        for(int i = 0; i < n-1; i++)
+        {
+            tot += (a[i]/mid)+min(1,a[i]%mid);
+        }
+
+        tot+=((double)a[n-1]/mid);
+
+        if(tot <= h)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    int minSpeedOnTime(vector<int>& a, double h) {
+
+        int low = 1;
+        int high = 10000002;
+
+        while(low < high)
+        {
+            int mid = (low+high)/2;
+            if(ok(a,mid,h))
+            {
+                high = mid;
+            }
+            else
+            {
+                low = mid+1;
+            }
+        }
+
+        if(low == 10000002)
+        {
+            return -1;
+        }
+
+        return low;  
+    }
+};
