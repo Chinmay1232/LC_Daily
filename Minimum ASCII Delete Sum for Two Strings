@@ -1,0 +1,41 @@
+class Solution {
+public:
+
+    // dp[i][j] = min ASCII sum after deleting optimally in suffixes of s1[i] and s2[j]
+
+    int minimumDeleteSum(string s1, string s2) {
+
+        const int n = s1.size();
+        const int m = s2.size();
+
+        vector<vector<int>> dp(n+1, vector<int>(m+1,0));
+
+        for(int i = m-1; i >= 0; i--)
+        {
+            dp[n][i] = s2[i]+dp[n][i+1];
+        }
+        for(int i = n-1; i >= 0; i--)
+        {
+            dp[i][m] = s1[i]+dp[i+1][m];
+        }
+
+        for(int i = n-1; i >= 0; i--)
+        {
+            for(int j = m-1; j >= 0; j--)
+            {
+                if(s1[i] == s2[j])
+                {
+                    dp[i][j] = dp[i+1][j+1];
+                }
+                else
+                {
+                    int one = s1[i];
+                    int two = s2[j];
+                    dp[i][j] = min(one+dp[i+1][j], two+dp[i][j+1]);
+                }
+            }
+        }
+        
+        return dp[0][0];
+    }
+};
