@@ -1,0 +1,58 @@
+template <class ok>  
+class Monotonic_queue
+{
+private:
+    deque<ok> q;
+public:
+    int Front()
+    {
+        return q.front();
+    }
+
+    void Pop_front()
+    {
+        q.pop_front();
+    }
+    
+    void insert(ok x)
+    {
+        while(!q.empty() && x > q.back())
+        {
+            q.pop_back();
+        }
+        q.push_back(x);
+    }
+
+};
+
+class Solution {
+public:
+
+    vector<int> maxSlidingWindow(vector<int>& a, int k) {
+        
+        vector<int> ans;
+        Monotonic_queue<int> dq;
+
+        for(int i = 0; i < k; i++)
+        {
+            dq.insert(a[i]);
+        }
+
+        ans.push_back(dq.Front());
+        int j = 0;
+
+        for(int i = k; i < a.size(); i++)
+        {
+            if(a[j] == dq.Front())
+            {
+                dq.Pop_front();
+            }
+
+            dq.insert(a[i]);
+            ans.push_back(dq.Front());
+            j++;
+        }
+
+        return ans;
+    }
+};
